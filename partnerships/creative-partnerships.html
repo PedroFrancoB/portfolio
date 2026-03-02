@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Creative Partnerships</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --cream: #F4EDE4;
+      --red: #CC3300;
+      --dark: #1a1a1a;
+      --light-text: #6b6b6b;
+    }
+
+    body {
+      background: var(--cream);
+      color: var(--dark);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      line-height: 1.6;
+    }
+
+    .back {
+      position: fixed;
+      top: 1.5rem;
+      left: 2rem;
+      text-decoration: none;
+      color: var(--dark);
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      z-index: 100;
+      transition: color 0.3s;
+    }
+
+    .back:hover { color: var(--red); }
+
+    .header {
+      padding: 8rem 3rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--red);
+      margin-bottom: 0.5rem;
+    }
+
+    .header p {
+      font-size: 0.85rem;
+      color: var(--light-text);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .divider {
+      width: 60px;
+      height: 1px;
+      background: var(--red);
+      margin: 2rem 0 3rem;
+    }
+
+    /* ========== CAROUSEL ========== */
+    .carousel-wrapper {
+      position: relative;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 3rem;
+      overflow: hidden;
+    }
+
+    .carousel {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+
+    .carousel-slide {
+      width: 100%;
+      min-width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .carousel-slide img {
+      max-width: 280px;
+      max-height: 280px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.3);
+      border: none;
+      color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: background 0.3s, opacity 0.3s;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+    }
+
+    .carousel-wrapper:hover .carousel-btn {
+      opacity: 1;
+    }
+
+    .carousel-btn:hover {
+      background: rgba(0,0,0,0.6);
+    }
+
+    .carousel-btn.prev { left: 3.5rem; }
+    .carousel-btn.next { right: 3.5rem; }
+    .carousel-btn.hidden { display: none; }
+
+    /* Dots */
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .carousel-dots .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.15);
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .carousel-dots .dot.active {
+      background: var(--red);
+    }
+
+    /* ========== PARTNER TEXT ========== */
+    .partner-descriptions {
+      max-width: 800px;
+      margin: 3rem auto 6rem;
+      padding: 0 3rem;
+    }
+
+    .partner-desc {
+      display: none;
+    }
+
+    .partner-desc.active {
+      display: block;
+    }
+
+    .partner-desc h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: var(--dark);
+      margin-bottom: 0.8rem;
+    }
+
+    .partner-desc p {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--dark);
+      margin-bottom: 1.2rem;
+    }
+
+    .partner-desc a.linkedin-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--red);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 400;
+      letter-spacing: 0.03em;
+      border-bottom: 1px solid var(--red);
+      padding-bottom: 2px;
+      transition: opacity 0.3s;
+    }
+
+    .partner-desc a.linkedin-link:hover {
+      opacity: 0.7;
+    }
+
+    /* ========== LIGHTBOX ========== */
+    .lightbox {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.9);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .lightbox.active { display: flex; }
+
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+    }
+
+    .lightbox .close-btn {
+      position: absolute;
+      top: 2rem; right: 2rem;
+      color: #fff;
+      font-size: 1.5rem;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+    }
+
+    @media (max-width: 768px) {
+      .header { padding: 7rem 1.5rem 2rem; }
+      .carousel-wrapper { padding: 0 1.5rem; }
+      .carousel-btn.prev { left: 2rem; }
+      .carousel-btn.next { right: 2rem; }
+      .partner-descriptions { padding: 0 1.5rem; }
+      .carousel-slide img {
+        max-width: 200px;
+        max-height: 200px;
+      }
+      .carousel-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="../index.html" class="back">← Back</a>
+
+  <div class="header">
+    <h1>Creative Partnerships</h1>
+    <p>Collaborations & Partners</p>
+    <div class="divider"></div>
+  </div>
+
+  <div class="carousel-wrapper">
+    <button class="carousel-btn prev hidden" onclick="moveSlide(-1)">&#8249;</button>
+    <button class="carousel-btn next" onclick="moveSlide(1)">&#8250;</button>
+
+    <div class="carousel" onclick="openLightbox()">
+      <div class="carousel-slide">
+        <img src="../media/creative partners/logos/martini.jpg" alt="martini.ai">
+      </div>
+      <div class="carousel-slide">
+        <img src="../media/creative partners/logos/caimera.jpg" alt="Caimera">
+      </div>
+      <div class="carousel-slide">
+        <img src="../media/creative partners/logos/flora.jpg" alt="Flora Fauna">
+      </div>
+      <div class="carousel-slide">
+        <img src="../media/creative partners/logos/imagineart.png" alt="ImagineArt">
+      </div>
+    </div>
+
+    <div class="carousel-dots">
+      <div class="dot active" onclick="goToSlide(0)"></div>
+      <div class="dot" onclick="goToSlide(1)"></div>
+      <div class="dot" onclick="goToSlide(2)"></div>
+      <div class="dot" onclick="goToSlide(3)"></div>
+    </div>
+  </div>
+
+  <div class="partner-descriptions">
+
+    <div class="partner-desc active" data-index="0">
+      <h3>martini.ai</h3>
+      <p>An AI-native credit intelligence platform designed for institutional-grade financial analysis. It automates credit risk assessments by pulling data from financial filings and news to provide real-time credit scores and risk insights for millions of companies.</p>
+      <a href="https://www.linkedin.com/company/martini-ai" target="_blank" class="linkedin-link">LinkedIn →</a>
+    </div>
+
+    <div class="partner-desc" data-index="1">
+      <h3>caimera.ai</h3>
+      <p>A specialized AI photography platform built specifically for the fashion and e-commerce industries. It allows brands to generate studio-quality product images, virtual photoshoots, and lifestyle content from simple sketches or existing photos, significantly reducing the need for physical shoots.</p>
+      <a href="https://www.linkedin.com/company/caimera" target="_blank" class="linkedin-link">LinkedIn →</a>
+    </div>
+
+    <div class="partner-desc" data-index="2">
+      <h3>Flora Fauna</h3>
+      <p>An innovative node-based creative workflow system that integrates over 50 different AI models into a single infinite canvas. It is designed for creative professionals to build complex, scalable workflows for image, video, and text generation rather than one-off outputs.</p>
+      <a href="https://www.linkedin.com/company/floraai" target="_blank" class="linkedin-link">LinkedIn →</a>
+    </div>
+
+    <div class="partner-desc" data-index="3">
+      <h3>ImagineArt</h3>
+      <p>An all-in-one generative AI creative suite that offers a wide range of tools for generating high-quality digital art, videos, and professional headshots. It features specialized apps for brand identity, social media content, and "flows" that turn creative ideas into structured content pipelines.</p>
+      <a href="https://www.linkedin.com/company/imagineartai" target="_blank" class="linkedin-link">LinkedIn →</a>
+    </div>
+
+  </div>
+
+  <div class="lightbox" onclick="closeLightbox()">
+    <span class="close-btn">&times;</span>
+    <div id="lightbox-content"></div>
+  </div>
+
+  <script>
+    let current = 0;
+    const slides = document.querySelectorAll('.carousel-slide');
+    const dots = document.querySelectorAll('.dot');
+    const descs = document.querySelectorAll('.partner-desc');
+    const prevBtn = document.querySelector('.carousel-btn.prev');
+    const nextBtn = document.querySelector('.carousel-btn.next');
+    const total = slides.length;
+
+    function updateCarousel() {
+      document.querySelector('.carousel').style.transform = `translateX(-${current * 100}%)`;
+      dots.forEach((d, i) => d.classList.toggle('active', i === current));
+      descs.forEach((d, i) => d.classList.toggle('active', i === current));
+      prevBtn.classList.toggle('hidden', current === 0);
+      nextBtn.classList.toggle('hidden', current === total - 1);
+    }
+
+    function moveSlide(dir) {
+      event.stopPropagation();
+      current = Math.max(0, Math.min(total - 1, current + dir));
+      updateCarousel();
+    }
+
+    function goToSlide(index) {
+      current = index;
+      updateCarousel();
+    }
+
+    function openLightbox() {
+      const lightbox = document.querySelector('.lightbox');
+      const container = document.getElementById('lightbox-content');
+      container.innerHTML = '';
+      const img = slides[current].querySelector('img');
+      const clone = document.createElement('img');
+      clone.src = img.src;
+      clone.alt = img.alt;
+      container.appendChild(clone);
+      lightbox.classList.add('active');
+    }
+
+    function closeLightbox() {
+      document.querySelector('.lightbox').classList.remove('active');
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') moveSlide(1);
+      if (e.key === 'ArrowLeft') moveSlide(-1);
+    });
+  </script>
+
+</body>
+</html>

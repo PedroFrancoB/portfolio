@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --cream: #F4EDE4;
+      --red: #CC3300;
+      --dark: #1a1a1a;
+      --light-text: #6b6b6b;
+    }
+
+    body {
+      background: var(--cream);
+      color: var(--dark);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      line-height: 1.6;
+    }
+
+    /* ========== NAV ========== */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 1.5rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      background: var(--cream);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+
+    nav .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--red);
+      text-decoration: none;
+    }
+
+    nav .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    nav .nav-links a {
+      text-decoration: none;
+      color: var(--dark);
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    nav .nav-links a:hover {
+      color: var(--red);
+    }
+
+    /* ========== HERO ========== */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 3rem 3rem;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 8vw, 7rem);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--red);
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero p {
+      font-size: 1rem;
+      color: var(--light-text);
+      max-width: 500px;
+      margin: 0 auto;
+      letter-spacing: 0.03em;
+    }
+
+    /* ========== SECTIONS ========== */
+    section {
+      padding: 6rem 3rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--red);
+      margin-bottom: 1rem;
+    }
+
+    .section-subtitle {
+      font-size: 0.85rem;
+      color: var(--light-text);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 3rem;
+    }
+
+    .divider {
+      width: 60px;
+      height: 1px;
+      background: var(--red);
+      margin-bottom: 3rem;
+    }
+
+    /* ========== GRID ========== */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .grid-item {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 3/4;
+      background: #e8e0d5;
+      cursor: pointer;
+    }
+
+    .grid-item img,
+    .grid-item video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .grid-item:hover img,
+    .grid-item:hover video {
+      transform: scale(1.03);
+    }
+
+    .grid-item .overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 1.5rem;
+      background: linear-gradient(transparent, rgba(0,0,0,0.5));
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .grid-item:hover .overlay {
+      opacity: 1;
+    }
+
+    .overlay h3 {
+      color: #fff;
+      font-family: 'Playfair Display', serif;
+      font-weight: 400;
+      font-size: 1.1rem;
+    }
+
+    .overlay p {
+      color: rgba(255,255,255,0.7);
+      font-size: 0.8rem;
+      margin-top: 0.3rem;
+    }
+
+    /* ========== VIDEO GRID ========== */
+    .video-grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .video-grid.shorts {
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+
+    .video-grid.shorts .grid-item {
+      aspect-ratio: 9/16;
+    }
+
+    .video-grid.ads {
+      grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    }
+
+    .video-grid.ads .grid-item {
+      aspect-ratio: 16/9;
+    }
+
+    .grid-item video {
+      pointer-events: none;
+    }
+
+    .grid-item:hover video {
+      pointer-events: auto;
+    }
+
+    /* ========== AWARDS ========== */
+    .award-card {
+      border: 1px solid rgba(0,0,0,0.08);
+      padding: 3rem;
+      max-width: 700px;
+    }
+
+    .award-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-bottom: 0.5rem;
+    }
+
+    .award-card .award-event {
+      color: var(--red);
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 1rem;
+    }
+
+    .award-card p {
+      color: var(--light-text);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    /* ========== CONTACT ========== */
+    .contact {
+      text-align: center;
+      padding: 8rem 3rem;
+    }
+
+    .contact .section-title {
+      margin-bottom: 1.5rem;
+    }
+
+    .contact p {
+      color: var(--light-text);
+      margin-bottom: 2rem;
+    }
+
+    .contact a.email {
+      color: var(--red);
+      text-decoration: none;
+      font-size: 1.2rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--red);
+      padding-bottom: 2px;
+      transition: opacity 0.3s;
+    }
+
+    .contact a.email:hover {
+      opacity: 0.7;
+    }
+
+    .social-links {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+    }
+
+    .social-links a {
+      color: var(--dark);
+      text-decoration: none;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      transition: color 0.3s;
+    }
+
+    .social-links a:hover {
+      color: var(--red);
+    }
+
+    /* ========== FOOTER ========== */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.75rem;
+      color: var(--light-text);
+      border-top: 1px solid rgba(0,0,0,0.06);
+    }
+
+    /* ========== LIGHTBOX ========== */
+    .lightbox {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .lightbox.active {
+      display: flex;
+    }
+
+    .lightbox img,
+    .lightbox video {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+    }
+
+    .lightbox .close-btn {
+      position: absolute;
+      top: 2rem;
+      right: 2rem;
+      color: #fff;
+      font-size: 1.5rem;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+    }
+
+    /* ========== PLACEHOLDER ========== */
+    .placeholder-text {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: #b5a99a;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* ========== MOBILE ========== */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
+    .menu-toggle span {
+      display: block;
+      width: 24px;
+      height: 1.5px;
+      background: var(--dark);
+      margin: 6px 0;
+      transition: all 0.3s;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        padding: 1.2rem 1.5rem;
+      }
+
+      .menu-toggle {
+        display: block;
+        z-index: 110;
+      }
+
+      nav .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 100%;
+        height: 100vh;
+        background: var(--cream);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+        transition: right 0.4s ease;
+      }
+
+      nav .nav-links.open {
+        right: 0;
+      }
+
+      nav .nav-links a {
+        font-size: 1.1rem;
+      }
+
+      section {
+        padding: 4rem 1.5rem;
+      }
+
+      .grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.8rem;
+      }
+
+      .video-grid.ads {
+        grid-template-columns: 1fr;
+      }
+
+      .video-grid.shorts {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .award-card {
+        padding: 2rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .video-grid.shorts {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ========== SUBSECTION LABEL ========== */
+    .subsection-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--light-text);
+      margin-bottom: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .subsection-label:first-of-type {
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== NAV ==================== -->
+  <nav>
+    <a href="#" class="logo">Portfolio</a>
+    <button class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="#editorials" onclick="closeMenu()">Editorials</a></li>
+      <li><a href="#videos" onclick="closeMenu()">Videos</a></li>
+      <li><a href="#awards" onclick="closeMenu()">Awards</a></li>
+      <li><a href="#contact" onclick="closeMenu()">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ==================== HERO ==================== -->
+  <section class="hero">
+    <div>
+      <h1>Creative<br>Portfolio</h1>
+      <p>GenAI Art Direction — Editorials, Video & Beyond</p>
+    </div>
+  </section>
+
+  <!-- ==================== EDITORIALS ==================== -->
+  <section id="editorials">
+    <h2 class="section-title">Editorials</h2>
+    <p class="section-subtitle">AI-Generated Spec Photo Shoots</p>
+    <div class="divider"></div>
+
+    <div class="grid">
+
+      <!--
+        ============================================
+        HOW TO ADD A PHOTO:
+        1. Place your image in the "portfolio/media/" folder
+        2. Copy the block below and paste it inside this <div class="grid">
+        3. Replace "YOUR_IMAGE.jpg" with the filename
+        4. Replace the title and description
+        ============================================
+
+        <div class="grid-item" onclick="openLightbox(this)">
+          <img src="media/YOUR_IMAGE.jpg" alt="Description">
+          <div class="overlay">
+            <h3>Editorial Title</h3>
+            <p>Brief description</p>
+          </div>
+        </div>
+      -->
+
+      <a href="editorials/prada-hamlet.html" class="grid-item">
+        <img src="media/photos/prada hamlet_04/Hamlet_Add_Prada_Logo_2026-02_01.jpg" alt="Prada Hamlet">
+        <div class="overlay">
+          <h3>Prada Hamlet</h3>
+          <p>View Editorial →</p>
+        </div>
+      </a>
+
+      <a href="editorials/silk-ralph-lauren.html" class="grid-item">
+        <img src="media/photos/ralph lauren_03/FLORA-Ralph Lauren Logo-24a3880b_cover_01.png" alt="Silk × Ralph Lauren">
+        <div class="overlay">
+          <h3>Silk × Ralph Lauren</h3>
+          <p>View Editorial →</p>
+        </div>
+      </a>
+
+      <a href="editorials/prada-paris.html" class="grid-item">
+        <img src="media/photos/prada paris_02/Paris Horse Prada.v2_01.png" alt="Prada Paris">
+        <div class="overlay">
+          <h3>Prada Paris</h3>
+          <p>View Editorial →</p>
+        </div>
+      </a>
+
+      <a href="editorials/puma.html" class="grid-item">
+        <img src="media/photos/puma_01/FLORA-Image 2-9fd16e1f.jpg" alt="Puma Editorial">
+        <div class="overlay">
+          <h3>Puma</h3>
+          <p>View Editorial →</p>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ==================== VIDEOS ==================== -->
+  <section id="videos">
+    <h2 class="section-title">Videos</h2>
+    <p class="section-subtitle">Motion & Moving Image</p>
+    <div class="divider"></div>
+
+    <!-- ADS -->
+    <p class="subsection-label">Spec Ads</p>
+    <div class="video-grid ads">
+
+      <div class="grid-item" onclick="openLightbox(this)">
+        <video src="media/videos/ads/hamlet_02/hamlet-wears-prada.mp4" poster="media/videos/ads/hamlet_02/Hamlet_Character_Close-up_2026-02-20_02-23.jpg" muted loop playsinline onmouseenter="this.play()" onmouseleave="this.pause();this.load()"></video>
+        <div class="overlay">
+          <h3>Hamlet Wears Prada</h3>
+          <p>AI-Generated Ad</p>
+        </div>
+      </div>
+
+      <div class="grid-item" onclick="openLightbox(this)">
+        <video src="media/videos/ads/penguin_01/penguinclassics.mp4" poster="media/videos/ads/penguin_01/Penguin_Hamlet_Integration_2026-02-17_20-58.jpg" muted loop playsinline onmouseenter="this.play()" onmouseleave="this.pause();this.load()"></video>
+        <div class="overlay">
+          <h3>Penguin Classics</h3>
+          <p>AI-Generated Ad</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SHORTS -->
+    <p class="subsection-label">Shorts</p>
+    <div class="video-grid shorts">
+
+      <div class="grid-item" onclick="openLightbox(this)">
+        <video src="media/videos/shorts/art fair_05/TheArtFair.V2.mp4" poster="media/videos/shorts/art fair_05/Untitled_Alignment_Adjustment_2_2026-03-01_20-38.jpg" muted loop playsinline onmouseenter="this.play()" onmouseleave="this.pause();this.load()"></video>
+        <div class="overlay">
+          <h3>The Art Fair</h3>
+          <p>AI-Generated Short</p>
+        </div>
+      </div>
+
+      <div class="grid-item" onclick="openLightbox(this)">
+        <video src="media/videos/shorts/silk_04/Silk. final.mp4" poster="media/videos/shorts/silk_04/FLORA-Silk in Breeze-6ba917eb (1).jpg" muted loop playsinline onmouseenter="this.play()" onmouseleave="this.pause();this.load()"></video>
+        <div class="overlay">
+          <h3>Silk</h3>
+          <p>AI-Generated Short</p>
+        </div>
+      </div>
+
+      <div class="grid-item" onclick="openLightbox(this)">
+        <video src="media/videos/shorts/cai xia_03/cái xià.mp4" poster="media/videos/shorts/cai xia_03/Untitled_Image_2_2026-03-01_20-48.jpg" muted loop playsinline onmouseenter="this.play()" onmouseleave="this.pause();this.load()"></video>
+        <div class="overlay">
+          <h3>Cái Xià</h3>
+          <p>AI-Generated Short</p>
+        </div>
+      </div>
+
+      <div class="grid-item" onclick="openLightbox(this)">
+        <video src="media/videos/shorts/the horse_02/the horse.ai.film.mp4" poster="media/videos/shorts/the horse_02/weavy-Magnific Upscale-2025-09-13 at 23.53.00.png" muted loop playsinline onmouseenter="this.play()" onmouseleave="this.pause();this.load()"></video>
+        <div class="overlay">
+          <h3>The Horse</h3>
+          <p>AI-Generated Short</p>
+        </div>
+      </div>
+
+      <div class="grid-item" onclick="openLightbox(this)">
+        <video src="media/videos/shorts/rilke_01/rilke short.mp4" poster="media/videos/shorts/rilke_01/Untitled_Image_4_2026-03-01_20-56.jpg" muted loop playsinline onmouseenter="this.play()" onmouseleave="this.pause();this.load()"></video>
+        <div class="overlay">
+          <h3>Rilke</h3>
+          <p>AI-Generated Short</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== AWARDS ==================== -->
+  <section id="awards">
+    <h2 class="section-title">Awards</h2>
+    <p class="section-subtitle">Recognition</p>
+    <div class="divider"></div>
+
+    <a href="awards/lisbon-lora.html" class="award-card" style="display:block;text-decoration:none;color:inherit;transition:border-color 0.3s;">
+      <h3>Lisbon Lora</h3>
+      <div class="award-event">Winner — December 2025</div>
+      <p>
+        One of the winners in Lisbon Lora's December 2025 competition, invited to speak about his creative process and screen "The Art Fair" at RNA Studio, January 2026.
+      </p>
+      <span style="display:inline-block;margin-top:1rem;color:var(--red);font-size:0.85rem;">View Details →</span>
+    </a>
+
+  </section>
+
+  <!-- ==================== CONTACT ==================== -->
+  <section id="contact" class="contact">
+    <h2 class="section-title">Get in Touch</h2>
+    <p>Open for collaborations and creative projects.</p>
+    <a href="mailto:pfb2010@gmail.com" class="email">pfb2010@gmail.com</a>
+    <div class="social-links">
+      <a href="https://www.linkedin.com/in/pedro-franco-bernardo-758623224/" target="_blank">LinkedIn</a>
+      <a href="https://www.instagram.com/arteficcioai/" target="_blank">Instagram</a>
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer>
+    &copy; 2025 — All rights reserved.
+  </footer>
+
+  <!-- ==================== LIGHTBOX ==================== -->
+  <div class="lightbox" onclick="closeLightbox()">
+    <span class="close-btn">&times;</span>
+    <div id="lightbox-content"></div>
+  </div>
+
+  <script>
+    function openLightbox(item) {
+      const lightbox = document.querySelector('.lightbox');
+      const container = document.getElementById('lightbox-content');
+      const img = item.querySelector('img');
+      const video = item.querySelector('video');
+
+      container.innerHTML = '';
+
+      if (img) {
+        const clone = document.createElement('img');
+        clone.src = img.src;
+        clone.alt = img.alt;
+        container.appendChild(clone);
+      } else if (video) {
+        const clone = document.createElement('video');
+        clone.src = video.src;
+        clone.controls = true;
+        clone.autoplay = true;
+        container.appendChild(clone);
+      }
+
+      lightbox.classList.add('active');
+    }
+
+    function closeLightbox() {
+      const lightbox = document.querySelector('.lightbox');
+      const container = document.getElementById('lightbox-content');
+      const video = container.querySelector('video');
+      if (video) video.pause();
+      lightbox.classList.remove('active');
+    }
+
+    function closeMenu() {
+      document.querySelector('.nav-links').classList.remove('open');
+    }
+
+    // Close lightbox on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeLightbox();
+    });
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
+
+</body>
+</html>

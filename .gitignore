@@ -1,0 +1,10 @@
+# Keep .mov files local (not uploaded to GitHub)
+*.mov
+
+# Windows system files
+desktop.ini
+Thumbs.db
+
+# Temp scripts
+check_sizes.ps1
+check_large.ps1

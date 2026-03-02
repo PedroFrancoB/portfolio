@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Puma — Editorial</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --cream: #F4EDE4;
+      --red: #CC3300;
+      --dark: #1a1a1a;
+      --light-text: #6b6b6b;
+    }
+
+    body {
+      background: var(--cream);
+      color: var(--dark);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      line-height: 1.6;
+    }
+
+    .back {
+      position: fixed;
+      top: 1.5rem;
+      left: 2rem;
+      text-decoration: none;
+      color: var(--dark);
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      z-index: 100;
+      transition: color 0.3s;
+    }
+
+    .back:hover { color: var(--red); }
+
+    .header {
+      padding: 8rem 3rem 3rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--red);
+      margin-bottom: 0.5rem;
+    }
+
+    .header p {
+      font-size: 0.85rem;
+      color: var(--light-text);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .divider {
+      width: 60px;
+      height: 1px;
+      background: var(--red);
+      margin: 2rem 0 3rem;
+    }
+
+    .gallery {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 3rem 6rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+      gap: 2rem;
+    }
+
+    .gallery-item {
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.03);
+    }
+
+    .lightbox {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.9);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .lightbox.active { display: flex; }
+
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+    }
+
+    .lightbox .close-btn {
+      position: absolute;
+      top: 2rem; right: 2rem;
+      color: #fff;
+      font-size: 1.5rem;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+    }
+
+    @media (max-width: 768px) {
+      .header { padding: 7rem 1.5rem 2rem; }
+      .gallery { padding: 0 1.5rem 4rem; grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="../index.html" class="back">← Back</a>
+
+  <div class="header">
+    <h1>Puma</h1>
+    <p>Editorial</p>
+    <div class="divider"></div>
+  </div>
+
+  <div class="gallery">
+    <div class="gallery-item" onclick="openLightbox(this)">
+      <img src="../media/photos/puma_01/FLORA-Image 2-9fd16e1f.jpg" alt="Puma">
+    </div>
+    <div class="gallery-item" onclick="openLightbox(this)">
+      <img src="../media/photos/puma_01/FLORA-Image 3-fb445f01_cover.jpg" alt="Puma">
+    </div>
+    <div class="gallery-item" onclick="openLightbox(this)">
+      <img src="../media/photos/puma_01/FLORA-Image 4-040c6d2d.jpg" alt="Puma">
+    </div>
+  </div>
+
+  <div class="lightbox" onclick="closeLightbox()">
+    <span class="close-btn">&times;</span>
+    <div id="lightbox-content"></div>
+  </div>
+
+  <script>
+    function openLightbox(item) {
+      const lightbox = document.querySelector('.lightbox');
+      const container = document.getElementById('lightbox-content');
+      const img = item.querySelector('img');
+      container.innerHTML = '';
+      if (img) {
+        const clone = document.createElement('img');
+        clone.src = img.src;
+        clone.alt = img.alt;
+        container.appendChild(clone);
+      }
+      lightbox.classList.add('active');
+    }
+
+    function closeLightbox() {
+      document.querySelector('.lightbox').classList.remove('active');
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeLightbox();
+    });
+  </script>
+
+</body>
+</html>

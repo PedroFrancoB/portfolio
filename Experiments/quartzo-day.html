@@ -42,7 +42,7 @@
 
     .header {
       padding: 8rem 3rem 2rem;
-      max-width: 1400px;
+      max-width: 1200px;
       margin: 0 auto;
     }
 
@@ -77,27 +77,83 @@
       margin-bottom: 3rem;
     }
 
-    .gallery {
-      max-width: 1400px;
+    /* ========== CAROUSEL ========== */
+    .carousel-wrapper {
+      position: relative;
+      max-width: 1200px;
       margin: 0 auto;
       padding: 0 3rem 6rem;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
-      gap: 1.5rem;
+      overflow: hidden;
     }
 
-    .gallery img {
+    .carousel {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+
+    .carousel img {
       width: 100%;
+      min-width: 100%;
       height: auto;
+      max-height: 75vh;
+      object-fit: contain;
       display: block;
       cursor: pointer;
-      transition: transform 0.4s ease;
     }
 
-    .gallery img:hover {
-      transform: scale(1.02);
+    .carousel-btn {
+      position: absolute;
+      top: 45%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.3);
+      border: none;
+      color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: background 0.3s, opacity 0.3s;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
     }
 
+    .carousel-wrapper:hover .carousel-btn {
+      opacity: 1;
+    }
+
+    .carousel-btn:hover {
+      background: rgba(0,0,0,0.6);
+    }
+
+    .carousel-btn.prev { left: 3.5rem; }
+    .carousel-btn.next { right: 3.5rem; }
+    .carousel-btn.hidden { display: none; }
+
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .carousel-dots .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.15);
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .carousel-dots .dot.active {
+      background: var(--red);
+    }
+
+    /* ========== LIGHTBOX ========== */
     .lightbox {
       display: none;
       position: fixed;
@@ -130,9 +186,14 @@
 
     @media (max-width: 768px) {
       .header { padding: 7rem 1.5rem 2rem; }
-      .gallery {
-        padding: 0 1.5rem 4rem;
-        grid-template-columns: 1fr;
+      .carousel-wrapper { padding: 0 1.5rem 4rem; }
+      .carousel-btn.prev { left: 2rem; }
+      .carousel-btn.next { right: 2rem; }
+      .carousel-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+        opacity: 1;
       }
     }
   </style>
@@ -150,10 +211,21 @@
     </p>
   </div>
 
-  <div class="gallery">
-    <img src="../Experiments/quartzo_day/ComfyUI_sertao_1.png" alt="Quartzo Day &mdash; Sert&atilde;o 1" onclick="openLightbox(this)">
-    <img src="../Experiments/quartzo_day/ComfyUI_sertao_2.png" alt="Quartzo Day &mdash; Sert&atilde;o 2" onclick="openLightbox(this)">
-    <img src="../Experiments/quartzo_day/ComfyUI_sertao_3.png" alt="Quartzo Day &mdash; Sert&atilde;o 3" onclick="openLightbox(this)">
+  <div class="carousel-wrapper">
+    <button class="carousel-btn prev hidden" onclick="moveSlide(-1)">&#8249;</button>
+    <button class="carousel-btn next" onclick="moveSlide(1)">&#8250;</button>
+
+    <div class="carousel" onclick="openLightbox()">
+      <img src="../Experiments/quartzo_day/ComfyUI_sertao_1.png" alt="Quartzo Day &mdash; Sert&atilde;o 1">
+      <img src="../Experiments/quartzo_day/ComfyUI_sertao_2.png" alt="Quartzo Day &mdash; Sert&atilde;o 2">
+      <img src="../Experiments/quartzo_day/ComfyUI_sertao_3.png" alt="Quartzo Day &mdash; Sert&atilde;o 3">
+    </div>
+
+    <div class="carousel-dots">
+      <div class="dot active" onclick="goToSlide(0)"></div>
+      <div class="dot" onclick="goToSlide(1)"></div>
+      <div class="dot" onclick="goToSlide(2)"></div>
+    </div>
   </div>
 
   <div class="lightbox" onclick="closeLightbox()">
@@ -162,13 +234,38 @@
   </div>
 
   <script>
-    function openLightbox(img) {
+    let current = 0;
+    const slides = document.querySelectorAll('.carousel img');
+    const dots = document.querySelectorAll('.dot');
+    const prevBtn = document.querySelector('.carousel-btn.prev');
+    const nextBtn = document.querySelector('.carousel-btn.next');
+    const total = slides.length;
+
+    function updateCarousel() {
+      document.querySelector('.carousel').style.transform = `translateX(-${current * 100}%)`;
+      dots.forEach((d, i) => d.classList.toggle('active', i === current));
+      prevBtn.classList.toggle('hidden', current === 0);
+      nextBtn.classList.toggle('hidden', current === total - 1);
+    }
+
+    function moveSlide(dir) {
+      event.stopPropagation();
+      current = Math.max(0, Math.min(total - 1, current + dir));
+      updateCarousel();
+    }
+
+    function goToSlide(index) {
+      current = index;
+      updateCarousel();
+    }
+
+    function openLightbox() {
       const lightbox = document.querySelector('.lightbox');
       const container = document.getElementById('lightbox-content');
       container.innerHTML = '';
       const clone = document.createElement('img');
-      clone.src = img.src;
-      clone.alt = img.alt;
+      clone.src = slides[current].src;
+      clone.alt = slides[current].alt;
       container.appendChild(clone);
       lightbox.classList.add('active');
     }
@@ -179,6 +276,8 @@
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') moveSlide(1);
+      if (e.key === 'ArrowLeft') moveSlide(-1);
     });
   </script>
 
